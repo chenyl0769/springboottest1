@@ -11,6 +11,6 @@
     <title>Title</title>
 </head>
 <body>
-出错啦<%=response.getStatus()%>;
+<div align="center">出错啦<%=response.getStatus()%>;</div>
 </body>
 </html>

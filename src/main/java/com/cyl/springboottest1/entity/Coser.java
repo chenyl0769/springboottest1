@@ -1,8 +1,9 @@
-package com.cyl.springboottest1;
+package com.cyl.springboottest1.entity;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.io.Serializable;
-import java.util.List;
-
+@JsonIgnoreProperties(value = {"handler"})
 public class Coser implements Serializable {
     private Integer id;
     private Integer uid;

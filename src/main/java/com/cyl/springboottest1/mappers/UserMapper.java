@@ -1,12 +1,10 @@
 package com.cyl.springboottest1.mappers;
 
 
-import com.cyl.springboottest1.User;
+import com.cyl.springboottest1.entity.User;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.mapping.FetchType;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -35,8 +33,14 @@ public interface UserMapper {
      * @param pwd
      * @return
      */
-
+    @Cacheable(value = "user",key ="#a0")
     @Select("SELECT * FROM stu where name=#{name} and pwd=#{pwd}")
+    @Results({
+            @Result(id=true,column = "id",property = "id"),
+            @Result(column = "name",property = "name"),
+            @Result(property = "cosers",column = "id",javaType = List.class,
+                    many = @Many(select = "com.cyl.springboottest1.mappers.CoserMapper.SelectCoserByUid",fetchType = FetchType.LAZY))
+    })
     public User login(@Param("name") String name, @Param("pwd") String pwd);
 
     /**
@@ -45,7 +49,22 @@ public interface UserMapper {
      * @return
      */
     @Select("SELECT * FROM STU WHERE id = #{id}")
-    public User selectUserBid(@Param("id") Integer id);
+    @Results({
+            @Result(id=true,column = "id",property = "id"),
+            @Result(column = "name",property = "name"),
+            @Result(property = "cosers",column = "id",javaType = List.class,
+            many = @Many(select = "com.cyl.springboottest1.mappers.CoserMapper.findcoserbyuid",fetchType = FetchType.LAZY))
+    })
+    public User findUserById(@Param("id") Integer id);
+
+
+    /**
+     * 根据用户名查询用户
+     * @param name
+     * @return
+     */
+    @Select("SELECT * FROM STU WHERE name = #{name}")
+    public User selectUserByName(@Param("name") String name);
 
 
     /**
@@ -55,5 +74,15 @@ public interface UserMapper {
 
     @Update("UPDATE STU SET pwd=#{user.pwd} WHERE id=#{user.id}")
     public void UpdataPwdById(@Param("user") User user);
+
+
+    /**
+     * 添加用户，并返回插入的ID
+     * @param user
+     * @return
+     */
+    @Insert("INSERT INTO stu(name,pwd) VALUE(#{user.name},#{user.pwd}) ")
+    @SelectKey(statement = "select last_insert_id()",keyColumn = "id",before = false,resultType = int.class,keyProperty = "user.id")
+    public int AddUser(@Param("user")User user);
 
 }

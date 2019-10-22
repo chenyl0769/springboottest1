@@ -1,11 +1,11 @@
 package com.cyl.springboottest1.service;
 
-import com.cyl.springboottest1.User;
+import com.cyl.springboottest1.entity.User;
 import com.cyl.springboottest1.mappers.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -27,7 +27,7 @@ public class UserService {
      * @param user
      * @return
      */
-    @Cacheable(value = "user",key ="#user.name")
+    //@Cacheable(value = "user",key ="#user.name")
     public User login(User user){
         User user1=userMapper.login(user.getName(),user.getPwd());
         return user1;
@@ -41,5 +41,36 @@ public class UserService {
     public void UpdatePwd(User user,String pwd){
         user.setPwd(pwd);
         userMapper.UpdataPwdById(user);
+    }
+
+    /**
+     * 添加用户
+     * @param user
+     * @return
+     */
+    @Transactional
+    public int AddUser(User user){
+        int aa= -1;
+        User user1= userMapper.selectUserByName(user.getName());
+        if (user1==null){
+            aa= userMapper.AddUser(user);
+        }
+
+        return aa;
+    }
+
+    /**
+     * ajax验证用户名是否存在
+     * @param name
+     * @return
+     */
+    public User findUserByName(String name){
+        User user1= userMapper.selectUserByName(name);
+        return user1;
+    }
+
+    public User findUserById(int id){
+        User user = userMapper.findUserById(id);
+        return user;
     }
 }

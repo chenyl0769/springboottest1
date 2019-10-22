@@ -1,6 +1,6 @@
 package com.cyl.springboottest1.fli;
 
-import com.cyl.springboottest1.User;
+import com.cyl.springboottest1.entity.User;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
@@ -9,7 +9,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Arrays;
-import java.util.Enumeration;
 import java.util.List;
 
 /**
@@ -29,7 +28,7 @@ public class Myfilter implements Filter {
 
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
-        String url = "/updatepwd,/toupdatepwd,/logout";
+        String url = "/updatepwd,/toupdatepwd,/logout,/upload,/select";
         List k = Arrays.asList(url.split(","));
         if (k.contains(request.getServletPath())) {
             User user = (User) request.getSession().getAttribute("se_name");
