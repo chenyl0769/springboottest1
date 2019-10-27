@@ -2,6 +2,8 @@ package com.cyl.springboottest1.service;
 
 import com.cyl.springboottest1.entity.User;
 import com.cyl.springboottest1.mappers.UserMapper;
+import com.cyl.springboottest1.mappers.XmlUserMapper;
+import com.cyl.springboottest1.mappers.Xmldao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,8 @@ import java.util.List;
 public class UserService {
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private XmlUserMapper xmlUserMapper;
 
     /**
      * 查询所有用户
@@ -72,5 +76,9 @@ public class UserService {
     public User findUserById(int id){
         User user = userMapper.findUserById(id);
         return user;
+    }
+
+    public List<User> xmlmapperusers(){
+        return xmlUserMapper.findallusers();
     }
 }

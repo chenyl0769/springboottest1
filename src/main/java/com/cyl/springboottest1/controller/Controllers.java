@@ -157,4 +157,11 @@ public class Controllers {
         return user.getCosers();
     }
 
+    @RequestMapping("/fuxml")
+    public String findalluserbyxml(){
+        List list= userService.xmlmapperusers();
+        System.out.println(list);
+        return null;
+    }
+
 }

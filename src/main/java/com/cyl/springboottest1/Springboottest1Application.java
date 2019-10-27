@@ -1,6 +1,7 @@
 package com.cyl.springboottest1;
 
 import com.cyl.springboottest1.fli.Myfilter;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -12,6 +13,7 @@ import org.springframework.web.SpringServletContainerInitializer;
 
 @SpringBootApplication
 //@EnableCaching
+@MapperScan(basePackages = {"com.cyl.springboottest1.mappers"})
 public class Springboottest1Application {
 
     public static void main(String[] args) {

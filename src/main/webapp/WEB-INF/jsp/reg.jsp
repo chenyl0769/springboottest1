@@ -9,7 +9,7 @@
 <html>
 <head>
     <title>注册</title>
-    <script type="text/javascript" src="jquery.min.js"></script>
+    <script type="text/javascript" src="ui/jquery.min.js"></script>
     <script type="text/javascript">
         function checkregname() {
             $.ajax({

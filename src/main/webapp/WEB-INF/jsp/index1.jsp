@@ -12,7 +12,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <head>
     <title>Login</title>
-    <script src="jquery.min.js" type="text/javascript"></script>
+    <script src="ui/jquery.min.js" type="text/javascript"></script>
     <script src="ui/jquery.easyui.min.js" type="text/javascript"></script>
     <link rel="stylesheet" href="ui/icon.css" type="text/css">
     <link rel="stylesheet" href="ui/easyui.css" type="text/css">
