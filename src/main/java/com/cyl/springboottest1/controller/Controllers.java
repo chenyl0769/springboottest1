@@ -2,17 +2,14 @@ package com.cyl.springboottest1.controller;
 
 import com.cyl.springboottest1.entity.Coser;
 import com.cyl.springboottest1.entity.User;
-import com.cyl.springboottest1.fli.Group1;
-import com.cyl.springboottest1.fli.Group2;
+import com.cyl.springboottest1.utils.Group1;
+import com.cyl.springboottest1.utils.Group2;
 import com.cyl.springboottest1.service.CoserService;
 import com.cyl.springboottest1.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ResourceUtils;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -20,7 +17,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -32,6 +28,13 @@ public class Controllers {
     @Autowired
     private CoserService coserService;
 
+    /**
+     * 登录
+     * @param user
+     * @param request
+     * @param session
+     * @return
+     */
     @RequestMapping(value = "/login")
     public String login( @Validated(value = Group1.class) User user,  HttpServletRequest request, HttpSession session) {
         if (request.getMethod().equals("GET")) {
@@ -101,6 +104,10 @@ public class Controllers {
         return "/error";
     }
 
+    /**
+     * 根据ID查询coser
+     * @return
+     */
     @RequestMapping("/csbid")
     public String findcoserbyid() {
 
@@ -110,6 +117,14 @@ public class Controllers {
         //System.out.println(coser.getUser());
         return "index1";
     }
+
+    /**
+     * 增加
+     * @param request
+     * @param session
+     * @param user
+     * @return
+     */
     @RequestMapping("/adduser")
     public String adduser(HttpServletRequest request, HttpSession session, @Validated(value = Group2.class) User user){
 
@@ -139,6 +154,15 @@ public class Controllers {
 
         return user1;
     }
+
+    /**
+     * 上传
+     * @param headimg
+     * @param request
+     * @param session
+     * @return
+     * @throws IOException
+     */
     @RequestMapping("/upload")
     public String upload(@RequestParam(value = "headimg") MultipartFile headimg,HttpServletRequest request,HttpSession session) throws IOException {
 
@@ -149,6 +173,12 @@ public class Controllers {
         headimg.transferTo(new File(path+"/"+filename+type));
         return "main";
     }
+
+    /**
+     * 根据用户ID查询用户,级联查询
+     * @param session
+     * @return
+     */
     @RequestMapping("/select")
     @ResponseBody
     public List findcoserbyuid(HttpSession session){
@@ -157,10 +187,24 @@ public class Controllers {
         return user.getCosers();
     }
 
+    /**
+     * xml配置方式查询所有
+     * @return
+     */
     @RequestMapping("/fuxml")
     public String findalluserbyxml(){
         List list= userService.xmlmapperusers();
         System.out.println(list);
+        return null;
+    }
+
+    /**
+     * rabbitmq测试
+     * @return
+     */
+    @RequestMapping("/mqtest")
+    public String rabbitmqtest(){
+        userService.mqtest();
         return null;
     }
 

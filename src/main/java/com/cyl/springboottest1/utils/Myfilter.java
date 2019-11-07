@@ -1,4 +1,4 @@
-package com.cyl.springboottest1.fli;
+package com.cyl.springboottest1.utils;
 
 import com.cyl.springboottest1.entity.User;
 import org.springframework.stereotype.Component;
@@ -12,7 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 
 /**
- * 我的过滤器
+ * 我的过滤器，判断uri的session
  */
 @Component
 @WebFilter(urlPatterns = "/*",filterName = "abc")

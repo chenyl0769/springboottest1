@@ -4,6 +4,7 @@ import com.cyl.springboottest1.entity.User;
 import com.cyl.springboottest1.mappers.UserMapper;
 import com.cyl.springboottest1.mappers.XmlUserMapper;
 import com.cyl.springboottest1.mappers.Xmldao;
+import com.cyl.springboottest1.rabbitmq.MessageSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,8 @@ public class UserService {
     private UserMapper userMapper;
     @Autowired
     private XmlUserMapper xmlUserMapper;
+    @Autowired
+    private MessageSender messageSender;
 
     /**
      * 查询所有用户
@@ -73,12 +76,28 @@ public class UserService {
         return user1;
     }
 
+    /**
+     * 根据ID查询
+     * @param id
+     * @return
+     */
     public User findUserById(int id){
         User user = userMapper.findUserById(id);
         return user;
     }
 
+    /**
+     * xml方式查询所有
+     * @return
+     */
     public List<User> xmlmapperusers(){
         return xmlUserMapper.findallusers();
+    }
+
+    /**
+     * rabbitmq发送消息
+     */
+    public void mqtest(){
+        messageSender.sendmsg("boot发送消息");
     }
 }

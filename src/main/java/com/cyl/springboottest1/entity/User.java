@@ -1,18 +1,17 @@
 package com.cyl.springboottest1.entity;
 
-import com.cyl.springboottest1.fli.Group1;
-import com.cyl.springboottest1.fli.Group2;
+import com.cyl.springboottest1.utils.Group1;
+import com.cyl.springboottest1.utils.Group2;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.validation.annotation.Validated;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 import java.io.Serializable;
 import java.util.List;
 
+/**
+ * User实体类
+ */
 @JsonIgnoreProperties(value = {"handler"})
 public class User implements Serializable {
     private Integer id;

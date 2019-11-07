@@ -9,7 +9,7 @@ import org.springframework.stereotype.Repository;
 @Mapper
 @Repository
 public interface CoserMapper {
-
+    //根据ID查询
     @Select("select * from coser where id= #{id}")
     @Results({
             @Result(id = true,property = "id",column = "id"),
@@ -24,6 +24,7 @@ public interface CoserMapper {
     })
     public Coser SelectCoserByUid(Integer id);
 
+    //根据外键查询
     @Select("select * from coser where uid= #{id}")
     public Coser findcoserbyuid(Integer id);
 }
