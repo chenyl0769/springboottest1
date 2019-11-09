@@ -1,0 +1,1 @@
+该工程使用springboot+mybatis+redis框架，加入rabbitmq中间件。页面使用了jquery ajax。整个工程有很多不人性的地方
