@@ -2,10 +2,12 @@ package com.cyl.springboottest1.controller;
 
 import com.cyl.springboottest1.entity.Coser;
 import com.cyl.springboottest1.entity.User;
+import com.cyl.springboottest1.service.CoserServiceImp;
+import com.cyl.springboottest1.service.Coserservice;
+import com.cyl.springboottest1.service.UserService;
+import com.cyl.springboottest1.service.UserServiceImp;
 import com.cyl.springboottest1.utils.Group1;
 import com.cyl.springboottest1.utils.Group2;
-import com.cyl.springboottest1.service.CoserService;
-import com.cyl.springboottest1.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ResourceUtils;
@@ -26,7 +28,7 @@ public class Controllers {
     @Autowired
     private UserService userService;
     @Autowired
-    private CoserService coserService;
+    private Coserservice coserService;
 
     /**
      * 登录
@@ -36,11 +38,11 @@ public class Controllers {
      * @return
      */
     @RequestMapping(value = "/login")
-    public String login( @Validated(value = Group1.class) User user,  HttpServletRequest request, HttpSession session) {
-        if (request.getMethod().equals("GET")) {
+    public String login(@Validated(value = Group1.class) User user, HttpServletRequest request, HttpSession session) {
+        /*if (request.getMethod().equals("GET")) {
             return "index1";
         }
-        /*if (result.hasErrors()) {
+        if (result.hasErrors()) {
             List<ObjectError> allErrors = result.getAllErrors();
             request.setAttribute("errors", allErrors);
             System.out.println(allErrors);
@@ -111,8 +113,10 @@ public class Controllers {
     @RequestMapping("/csbid")
     public String findcoserbyid() {
 
-        Coser coser = coserService.findcoserbyid(1);
-        System.out.println(coser.getCname());
+        Coser coser = coserService.findcoserbyid(3);
+        if (coser!=null){
+            System.out.println(coser.getCname());
+        }
         System.out.println("--------");
         //System.out.println(coser.getUser());
         return "index1";

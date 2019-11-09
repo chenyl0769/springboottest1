@@ -1,103 +1,60 @@
 package com.cyl.springboottest1.service;
 
 import com.cyl.springboottest1.entity.User;
-import com.cyl.springboottest1.mappers.UserMapper;
-import com.cyl.springboottest1.mappers.XmlUserMapper;
-import com.cyl.springboottest1.mappers.Xmldao;
-import com.cyl.springboottest1.rabbitmq.MessageSender;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
 @Service
-public class UserService {
-    @Autowired
-    private UserMapper userMapper;
-    @Autowired
-    private XmlUserMapper xmlUserMapper;
-    @Autowired
-    private MessageSender messageSender;
-
+public interface UserService {
     /**
      * 查询所有用户
      * @return
      */
-    public List<User> findusers(){
-        return userMapper.findalluser();
-    }
+    public List<User> findusers();
 
     /**
      * 登录验证
      * @param user
      * @return
      */
-    //@Cacheable(value = "user",key ="#user.name")
-    public User login(User user){
-        User user1=userMapper.login(user.getName(),user.getPwd());
-        return user1;
-    }
+    public User login(User user);
 
     /**
-     * 更新用户密码
-     * @param user
-     */
-    @CacheEvict(value = "user",key ="#user.name")
-    public void UpdatePwd(User user,String pwd){
-        user.setPwd(pwd);
-        userMapper.UpdataPwdById(user);
-    }
-
-    /**
-     * 添加用户
+     * 增加
      * @param user
      * @return
      */
-    @Transactional
-    public int AddUser(User user){
-        int aa= -1;
-        User user1= userMapper.selectUserByName(user.getName());
-        if (user1==null){
-            aa= userMapper.AddUser(user);
-        }
-
-        return aa;
-    }
+    public int AddUser(User user);
 
     /**
      * ajax验证用户名是否存在
      * @param name
      * @return
      */
-    public User findUserByName(String name){
-        User user1= userMapper.selectUserByName(name);
-        return user1;
-    }
+    public User findUserByName(String name);
+
+    /**
+     * 更新
+     * @param user
+     * @param pwd
+     */
+    public void UpdatePwd(User user,String pwd);
 
     /**
      * 根据ID查询
      * @param id
      * @return
      */
-    public User findUserById(int id){
-        User user = userMapper.findUserById(id);
-        return user;
-    }
+    public User findUserById(int id);
 
     /**
      * xml方式查询所有
      * @return
      */
-    public List<User> xmlmapperusers(){
-        return xmlUserMapper.findallusers();
-    }
+    public List<User> xmlmapperusers();
 
     /**
-     * rabbitmq发送消息
+     * rabbitmq测试
      */
-    public void mqtest(){
-        messageSender.sendmsg("boot发送消息");
-    }
+    public void mqtest();
 }

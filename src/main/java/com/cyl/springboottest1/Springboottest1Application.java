@@ -5,6 +5,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
+//关闭了redis缓存的使用
 //@EnableCaching
 @MapperScan(basePackages = {"com.cyl.springboottest1.mappers"})
 public class Springboottest1Application {

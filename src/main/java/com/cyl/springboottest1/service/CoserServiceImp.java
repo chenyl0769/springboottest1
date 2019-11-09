@@ -6,10 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class CoserService {
+public class CoserServiceImp implements Coserservice {
     @Autowired
     private CoserMapper coserMapper;
-
+    @Override
     public Coser findcoserbyid(Integer id){
 
         return coserMapper.SelectCoserByUid(id);
