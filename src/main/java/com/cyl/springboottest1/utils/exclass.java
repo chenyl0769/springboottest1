@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * 全局数据校验
  */
-@ControllerAdvice
+//@ControllerAdvice
 public class exclass {
     @ResponseBody
     @ExceptionHandler(BindException.class)

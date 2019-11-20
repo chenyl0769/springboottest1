@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: Administrator
@@ -10,33 +11,19 @@
 <head>
     <title>注册</title>
     <script type="text/javascript" src="ui/jquery.min.js"></script>
-    <script type="text/javascript">
-        function checkregname() {
-            $.ajax({
-                url:"/checkname",
-                data:{name:$("#uname").val()},
-                datatype:"json",
-                success:function (data) {
-                    console.log(data);
-                    var aa= JSON.stringify(data);
-                    console.log(aa);
-                    console.log(aa.get("id"));
-                },
-                error:function (data) {
-                    console.log("bb");
-                }
-
-            });
-        }
-    </script>
+    <script type="text/javascript" src="js/logjs.js"></script>
 </head>
 <body>
 ${error}
-<form action="/adduser" method="post" enctype="application/x-www-form-urlencoded">
-    用户名：<input id="uname" type="text" name="name" onchange="checkregname()"><br>
-    密码：<input type="password" name="pwd"><br>
-    确认密码：<input type="password" name="pwd"><br>
-            <input type="submit" value="注册">
+<form action="/adduser" method="post" enctype="application/x-www-form-urlencoded" onsubmit="return regsub()">
+    用户名：<input id="uname" type="text" name="name" onchange="checkregname()"><span id="namecheck"></span><br>
+    密码：<input id="pwd" type="password" name="pwd"><span id="pwdcheck"></span><br>
+    确认密码：<input id="pwd2" type="password" name="pwd1"><span id="enterpwdcheck"></span><br>
+            <input type="submit" value="注册" disabled="disabled" id="registe">
 </form>
+<c:forEach items="${errors}" var="err">
+    ${err.defaultMessage}<br>
+</c:forEach>
+
 </body>
 </html>

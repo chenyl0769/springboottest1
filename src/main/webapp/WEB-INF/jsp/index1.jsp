@@ -36,12 +36,13 @@
                         }}]
             });
         }
-        function suac() {
+        function sub() {
             $.ajax({
                 type:"POST",
                 url: "/login",
                 data:$("#form1").serialize(),
                 success : function(msg) {
+                    console.log("提示："+msg);
                     document.getElementById("name").innerText="";
                     document.getElementById("pwd").innerText="";
                     for (var i = 0; i < msg.length; i++) {
@@ -49,8 +50,6 @@
 
                         var cv= document.getElementById(a);
                         cv.innerText="*"+msg[i].defaultMessage;
-                        //console.log(msg[i].defaultMessage);
-                        //console.log(msg[i].field);
                     }
                 },
                 error:function (data) {
@@ -61,17 +60,10 @@
     </script>
 </head>
 <body>
-<%--<%
-    String ss;
-    if (request.getAttribute("errors")!=null){
-        for (ObjectError error :(List<ObjectError>)request.getAttribute("errors")){
-            FieldError fieldError = (FieldError) error;
-            request.setAttribute(fieldError.getField(),fieldError.getDefaultMessage());
-        }
-    }
-%>--%>
-
-<button id="btn_log" onclick="log()">easyui</button>
+<c:forEach items="${errors}" var="err">
+    ${err.defaultMessage}<br>
+</c:forEach>
+${uperror}<br>
 <a href="/toreg">注册</a>
 <div id="dd">
     <form id="form1" action="/login" method="post" enctype="application/x-www-form-urlencoded">
@@ -79,8 +71,8 @@
         PWD:<input type="password" name="pwd" value="${user.pwd}"><span id="pwd"></span><br>
         <input type="submit" value="Login">
     </form>
-<button id="subutt" onclick="suac()">点击登录</button>
+
 </div>
-${uperror}
+
 </body>
 </html>

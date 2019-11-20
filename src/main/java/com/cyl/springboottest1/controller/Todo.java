@@ -24,12 +24,22 @@ public class Todo {
     }
 
     /**
-     * 跳转到主页页面
+     * 跳转到注册页面
      * @return
      */
     @RequestMapping("/toreg")
     public String toreg() {
 
         return "reg" ;
+    }
+
+    /**
+     * 跳转到主页
+     * @return
+     */
+    @RequestMapping("/tomain")
+    public String tomain() {
+
+        return "main" ;
     }
 }

@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: Administrator
@@ -16,16 +17,19 @@
         var cc =document.getElementById("enterpwd");
         if (bb.value!=cc.value){
             alert("密码不一致");
-            return ;
+            return false ;
         }
     }
 </script>
 <body>
-用户：${se_name.name}
+用户：${se_name.name}&nbsp;&nbsp;<a href="/tomain">返回主页</a>
 <form action="/updatepwd" method="post" enctype="application/x-www-form-urlencoded">
-    新密码:<input type="password" id="newpwd" name="newpwd1"><br>
+    新密码:<input type="password" id="newpwd" name="pwd"><br>
     确认密码：<input type="password" id="enterpwd"><br>
-    <button id="updatepwd" onclick="aa()">修改</button>
+    <button id="updatepwd" onclick="return aa()">修改</button>
 </form>
+<c:forEach items="${errors}" var="err">
+    ${err.defaultMessage}<br>
+</c:forEach>
 </body>
 </html>

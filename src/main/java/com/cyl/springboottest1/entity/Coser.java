@@ -3,6 +3,7 @@ package com.cyl.springboottest1.entity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 /**
  * Coser实体类
@@ -62,5 +63,22 @@ public class Coser implements Serializable {
                 ", cname='" + cname + '\'' +
                 ", cstr='" + cstr + '\'' +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Coser coser = (Coser) o;
+        return Objects.equals(id, coser.id) &&
+                Objects.equals(uid, coser.uid) &&
+                Objects.equals(cname, coser.cname) &&
+                Objects.equals(cstr, coser.cstr) &&
+                Objects.equals(user, coser.user);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, uid, cname, cstr, user);
     }
 }

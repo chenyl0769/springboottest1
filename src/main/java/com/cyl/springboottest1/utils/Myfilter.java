@@ -28,7 +28,7 @@ public class Myfilter implements Filter {
 
         HttpServletRequest request = (HttpServletRequest) servletRequest;
         HttpServletResponse response = (HttpServletResponse) servletResponse;
-        String url = "/updatepwd,/toupdatepwd,/logout,/upload,/select";
+        String url = "/updatepwd,/toupdatepwd,/logout,/upload,/select,/tomain";
         List k = Arrays.asList(url.split(","));
         if (k.contains(request.getServletPath())) {
             User user = (User) request.getSession().getAttribute("se_name");
@@ -36,7 +36,7 @@ public class Myfilter implements Filter {
                 filterChain.doFilter(request,response);
                 return;
             }
-            request.getRequestDispatcher("/WEB-INF/jsp/index1.jsp").forward(request,response);
+            response.sendRedirect("index");
             return;
         }
         filterChain.doFilter(request,response);

@@ -2,15 +2,16 @@ package com.cyl.springboottest1.controller;
 
 import com.cyl.springboottest1.entity.Coser;
 import com.cyl.springboottest1.entity.User;
-import com.cyl.springboottest1.service.CoserServiceImp;
 import com.cyl.springboottest1.service.Coserservice;
 import com.cyl.springboottest1.service.UserService;
-import com.cyl.springboottest1.service.UserServiceImp;
-import com.cyl.springboottest1.utils.Group1;
-import com.cyl.springboottest1.utils.Group2;
+import com.cyl.springboottest1.utils.GroupLogin;
+import com.cyl.springboottest1.utils.GroupRegiste;
+import com.cyl.springboottest1.utils.GroupUptatePwd;
+import com.cyl.springboottest1.utils.MyErrorValidated;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ResourceUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,16 +39,14 @@ public class Controllers {
      * @return
      */
     @RequestMapping(value = "/login")
-    public String login(@Validated(value = Group1.class) User user, HttpServletRequest request, HttpSession session) {
-        /*if (request.getMethod().equals("GET")) {
+    public String login(@Validated(value = GroupLogin.class) User user, BindingResult result, HttpServletRequest request, HttpSession session) {
+        if (request.getMethod().equals("GET")) {
             return "index1";
         }
         if (result.hasErrors()) {
-            List<ObjectError> allErrors = result.getAllErrors();
-            request.setAttribute("errors", allErrors);
-            System.out.println(allErrors);
+            MyErrorValidated.returnerror(result,request);
             return "index1";
-        }*/
+        }
         User user1 = userService.login(user);
         if (user1 == null) {
             request.setAttribute("uperror", "账号或密码错误");
@@ -95,10 +94,13 @@ public class Controllers {
      * @param request
      */
     @RequestMapping("/updatepwd")
-    public String UpdatePwd(HttpSession session, HttpServletRequest request, String newpwd1) {
-
-        if (newpwd1 != null || newpwd1.equals("")) {
-            userService.UpdatePwd((User) session.getAttribute("se_name"), newpwd1);
+    public String UpdatePwd(HttpSession session, HttpServletRequest request, @Validated(value = GroupUptatePwd.class) User user, BindingResult result) {
+        if (result.hasErrors()) {
+            MyErrorValidated.returnerror(result,request);
+            return "edit";
+        }
+        if (user.getPwd() != null || user.getPwd().equals("")) {
+            userService.UpdatePwd((User) session.getAttribute("se_name"), user.getPwd());
             System.out.println("密码更新成功");
 
             return "main";
@@ -130,8 +132,11 @@ public class Controllers {
      * @return
      */
     @RequestMapping("/adduser")
-    public String adduser(HttpServletRequest request, HttpSession session, @Validated(value = Group2.class) User user){
-
+    public String adduser(HttpServletRequest request, HttpSession session, @Validated(value = GroupRegiste.class) User user, BindingResult result){
+        if (result.hasErrors()) {
+            MyErrorValidated.returnerror(result,request);
+            return "reg";
+        }
         int res=userService.AddUser(user);
         System.out.println(res);
         if (res!=1){
