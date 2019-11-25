@@ -41,3 +41,46 @@ function regsub() {
     }
     return true;
 }
+
+function log() {
+    $('#dd').dialog({
+        title:"登录",
+        modal:true,
+        buttons:[{text:"登录",handler:function () {
+
+                $('#form1').form('submit',{
+                    success:function (data) {
+                        console.log(data);
+                    }
+                });
+            }},
+            {text:"注册",handler:function () {
+                    alert("11111");
+                }}]
+    });
+}
+function sub() {
+    $.ajax({
+        type:"POST",
+        url: "/login",
+        data:$("#form1").serialize(),
+        success : function(msg) {
+            console.log("提示："+msg);
+            document.getElementById("name").innerText="";
+            document.getElementById("pwd").innerText="";
+            for (var i = 0; i < msg.length; i++) {
+                var a= msg[i].field;
+
+                var cv= document.getElementById(a);
+                cv.innerText="*"+msg[i].defaultMessage;
+            }
+        },
+        error:function (data) {
+            console.log(data);
+        }
+    });
+}
+function flush() {
+    document.getElementById("randomcodeimg").setAttribute("src","/img?"+Date.now());
+
+}

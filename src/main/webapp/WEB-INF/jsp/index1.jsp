@@ -17,49 +17,7 @@
     <link rel="stylesheet" href="ui/icon.css" type="text/css">
     <link rel="stylesheet" href="ui/easyui.css" type="text/css">
 
-    <script type="text/javascript">
-
-        function log() {
-            $('#dd').dialog({
-                title:"登录",
-                modal:true,
-                buttons:[{text:"登录",handler:function () {
-
-                        $('#form1').form('submit',{
-                            success:function (data) {
-                                console.log(data);
-                            }
-                        });
-                    }},
-                    {text:"注册",handler:function () {
-                            alert("11111");
-                        }}]
-            });
-        }
-        function sub() {
-            $.ajax({
-                type:"POST",
-                url: "/login",
-                data:$("#form1").serialize(),
-                success : function(msg) {
-                    console.log("提示："+msg);
-                    document.getElementById("name").innerText="";
-                    document.getElementById("pwd").innerText="";
-                    for (var i = 0; i < msg.length; i++) {
-                        var a= msg[i].field;
-
-                        var cv= document.getElementById(a);
-                        cv.innerText="*"+msg[i].defaultMessage;
-                    }
-                },
-                error:function (data) {
-                    console.log(data);
-                }
-            });
-        }
-        function flush() {
-            document.getElementById("randomcodeimg").setAttribute("src","/img?"+Date.now());
-        }
+    <script type="text/javascript" src="js/logjs.js">
     </script>
 </head>
 <body>
@@ -72,10 +30,10 @@ ${uperror}<br>
     <form id="form1" action="/login" method="post" enctype="application/x-www-form-urlencoded">
         LOGIN：<input type="text" name="user.name" value="${user.name}"><span id="name"></span><br>
         PWD:<input type="password" name="user.pwd" value="${user.pwd}"><span id="pwd"></span><br>
-        Code:<input type="text" name="code"><br>
+        Code:<input type="text" name="code"><img src="/img" id="randomcodeimg" onclick="flush()" ><button onclick="flush()" type="button">换一张</button><br>
         <input type="submit" value="Login">
     </form>
-    <img src="/img" id="randomcodeimg"><button onclick="flush()">换一张</button><br>
+
 
 </div>
 
