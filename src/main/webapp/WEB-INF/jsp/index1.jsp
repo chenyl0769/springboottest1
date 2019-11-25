@@ -57,6 +57,9 @@
                 }
             });
         }
+        function flush() {
+            document.getElementById("randomcodeimg").setAttribute("src","/img?"+Date.now());
+        }
     </script>
 </head>
 <body>
@@ -67,10 +70,12 @@ ${uperror}<br>
 <a href="/toreg">注册</a>
 <div id="dd">
     <form id="form1" action="/login" method="post" enctype="application/x-www-form-urlencoded">
-        LOGIN：<input type="text" name="name" value="${user.name}"><span id="name"></span><br>
-        PWD:<input type="password" name="pwd" value="${user.pwd}"><span id="pwd"></span><br>
+        LOGIN：<input type="text" name="user.name" value="${user.name}"><span id="name"></span><br>
+        PWD:<input type="password" name="user.pwd" value="${user.pwd}"><span id="pwd"></span><br>
+        Code:<input type="text" name="code"><br>
         <input type="submit" value="Login">
     </form>
+    <img src="/img" id="randomcodeimg"><button onclick="flush()">换一张</button><br>
 
 </div>
 

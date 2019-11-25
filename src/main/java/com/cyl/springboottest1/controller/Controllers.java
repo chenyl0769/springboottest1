@@ -1,27 +1,27 @@
 package com.cyl.springboottest1.controller;
 
 import com.cyl.springboottest1.entity.Coser;
+import com.cyl.springboottest1.entity.LoginVO;
 import com.cyl.springboottest1.entity.User;
 import com.cyl.springboottest1.service.Coserservice;
 import com.cyl.springboottest1.service.UserService;
-import com.cyl.springboottest1.utils.GroupLogin;
-import com.cyl.springboottest1.utils.GroupRegiste;
-import com.cyl.springboottest1.utils.GroupUptatePwd;
-import com.cyl.springboottest1.utils.MyErrorValidated;
+import com.cyl.springboottest1.utils.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.ResourceUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 @Controller
@@ -33,21 +33,31 @@ public class Controllers {
 
     /**
      * 登录
-     * @param user
+     * @param loginVO
      * @param request
      * @param session
      * @return
      */
     @RequestMapping(value = "/login")
-    public String login(@Validated(value = GroupLogin.class) User user, BindingResult result, HttpServletRequest request, HttpSession session) {
+    public String login(@Validated(value = GroupLogin.class) LoginVO loginVO, BindingResult result, HttpServletRequest request, HttpSession session) {
+        //过滤get请求
         if (request.getMethod().equals("GET")) {
             return "index1";
         }
+        //参数校验
         if (result.hasErrors()) {
             MyErrorValidated.returnerror(result,request);
             return "index1";
         }
-        User user1 = userService.login(user);
+        //校验验证码
+        String code = loginVO.getCode();
+        String sessioncode=(String) request.getSession().getAttribute("code");
+        if (!code.toUpperCase().equals(sessioncode.toUpperCase())) {
+            request.setAttribute("uperror", "验证码错误");
+            return "index1";
+        }
+        //校验用户
+        User user1 = userService.login(loginVO.getUser());
         if (user1 == null) {
             request.setAttribute("uperror", "账号或密码错误");
             return "index1";
@@ -65,11 +75,10 @@ public class Controllers {
     @RequestMapping("/logout")
     public String logout(HttpSession session) {
         User user = (User) session.getAttribute("se_name");
-
         if (user != null) {
+            //删除session
             session.removeAttribute("se_name");
-            System.out.println("删除session");
-        }
+    }
 
         return "index1";
     }
@@ -95,10 +104,12 @@ public class Controllers {
      */
     @RequestMapping("/updatepwd")
     public String UpdatePwd(HttpSession session, HttpServletRequest request, @Validated(value = GroupUptatePwd.class) User user, BindingResult result) {
+        //参数校验
         if (result.hasErrors()) {
             MyErrorValidated.returnerror(result,request);
             return "edit";
         }
+        //更新密码
         if (user.getPwd() != null || user.getPwd().equals("")) {
             userService.UpdatePwd((User) session.getAttribute("se_name"), user.getPwd());
             System.out.println("密码更新成功");
@@ -133,19 +144,19 @@ public class Controllers {
      */
     @RequestMapping("/adduser")
     public String adduser(HttpServletRequest request, HttpSession session, @Validated(value = GroupRegiste.class) User user, BindingResult result){
+        //参数校验
         if (result.hasErrors()) {
             MyErrorValidated.returnerror(result,request);
             return "reg";
         }
         int res=userService.AddUser(user);
-        System.out.println(res);
         if (res!=1){
-            System.out.println("注册失败");
+            //注册失败
             request.setAttribute("error","注册失败");
             return "reg";
         }
         session.setAttribute("se_name",user);
-        System.out.println("注册成功");
+        //注册成功
         return "main";
     }
 
@@ -215,6 +226,16 @@ public class Controllers {
     public String rabbitmqtest(){
         userService.mqtest();
         return null;
+    }
+
+    @RequestMapping("/img")
+    public void imgtest(HttpServletRequest request,HttpServletResponse response) throws IOException {
+        RandomCode randomCode =new RandomCode();
+        OutputStream outputStream=response.getOutputStream();
+        BufferedImage bufferedImage=randomCode.createcode();
+        request.getSession().setAttribute("code",randomCode.getCode());
+        ImageIO.write(bufferedImage,"jpeg",outputStream);
+        //return null;
     }
 
 }
