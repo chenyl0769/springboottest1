@@ -5,7 +5,7 @@ function checkregname() {
         datatype:"json",
         success:function (data) {
             console.log(data);
-            if (data!="") {
+            if (data!=""&&data!=null) {
                 //已经存在
                 document.getElementById("registe").disabled=true;
                 document.getElementById("namecheck").innerText="用户名已经存在";

@@ -17,7 +17,7 @@ public interface UserMapper {
      * @return
      */
 
-    @Select("SELECT * FROM stu")
+    @Select("SELECT id,name,pwd,sex FROM stu")
     @Results({
             @Result(id=true,property ="id",column = "id"),
             @Result(property ="name",column = "name"),
@@ -34,7 +34,7 @@ public interface UserMapper {
      * @return
      */
     @Cacheable(value = "user",key ="#a0")
-    @Select("SELECT * FROM stu where name=#{name} and pwd=#{pwd}")
+    @Select("SELECT id,name,pwd,sex FROM stu where name=#{name} and pwd=#{pwd}")
     @Results({
             @Result(id=true,column = "id",property = "id"),
             @Result(column = "name",property = "name"),
@@ -48,7 +48,7 @@ public interface UserMapper {
      * @param id
      * @return
      */
-    @Select("SELECT * FROM STU WHERE id = #{id}")
+    @Select("SELECT id,name,pwd,sex FROM STU WHERE id = #{id}")
     @Results({
             @Result(id=true,column = "id",property = "id"),
             @Result(column = "name",property = "name"),
@@ -63,7 +63,7 @@ public interface UserMapper {
      * @param name
      * @return
      */
-    @Select("SELECT * FROM STU WHERE name = #{name}")
+    @Select("SELECT id,name,pwd,sex FROM STU WHERE name = #{name}")
     public User selectUserByName(@Param("name") String name);
 
 
